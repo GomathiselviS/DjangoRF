@@ -1,0 +1,2 @@
+# DjangoRF
+DjangoRF practice project
