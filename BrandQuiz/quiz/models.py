@@ -3,6 +3,10 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Category(models.Model):
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+        ordering = ["id"]
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -18,7 +22,7 @@ class Quizzes(models.Model):
     title = models.CharField(
         max_length=255, default=_("New Quiz"), verbose_name=_("Quiz Title")
     )
-    category = models.ForeignKey(Category, default=1, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     date_created = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -45,6 +49,7 @@ class Slogan(Updated):
     date_created = models.DateTimeField(auto_now=True, verbose_name=_("Date Created"))
     is_active = models.BooleanField(default=False, verbose_name=_("Active Status"))
 
+
     def __str__(self):
         return self.question
 
@@ -63,3 +68,9 @@ class Brand(Updated):
 
     def __str__(self):
         return self.brand_text
+
+    def get_right_answer(self):
+        if self.is_right:
+            return self.brand_text
+        else:
+            return None

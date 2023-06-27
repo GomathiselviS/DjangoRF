@@ -7,6 +7,7 @@ class QuizSerializer(serializers.ModelSerializer):
         model = Quizzes
         fields = [
             "title",
+            "category",
         ]
 
 
@@ -19,6 +20,23 @@ class BrandSerializer(serializers.ModelSerializer):
             "is_right",
         ]
 
+class OnlySloganSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Slogan
+        fields = [
+            "id",
+            "question",
+        ]
+
+
+class OnlyBrandtextSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Brand
+        fields = [
+            "id",
+            "brand_text",
+        ]
 
 class RandomSloganSerializer(serializers.ModelSerializer):
     brand = BrandSerializer(many=True, read_only=True)
@@ -40,5 +58,51 @@ class SloganSerializer(serializers.ModelSerializer):
         fields = [
             "quiz",
             "question",
+            "brand",
+        ]
+
+class GetRandomSloganSerializer(serializers.ModelSerializer):
+    brand = OnlyBrandtextSerializer(many=True, read_only=True)
+
+
+    class Meta:
+        model = Slogan
+        fields = [
+            "id",
+            "question",
+            "brand",
+        ]
+
+#class GetAnswerSerializer(serializers.ModelSerializer):
+#    slogan = OnlySloganSerializer(many=True, read_only=True)
+#    #brand = BrandSerializer(many=True, read_only=True)
+#    class Meta:
+#        model = Brand
+#        fields = [
+#            "id",
+#            #"question",
+#            #"brand",
+#            "get_right_answer",
+#            "slogan",
+#        ]
+
+class RightBrandtextSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Brand
+        fields = [
+            "get_right_answer",
+        ]
+
+
+class GetAnswerSerializer(serializers.ModelSerializer):
+    brand = RightBrandtextSerializer(many=True, read_only=True)
+
+
+    class Meta:
+        model = Slogan
+        fields = [
+            "id",
+        #    "question",
             "brand",
         ]
